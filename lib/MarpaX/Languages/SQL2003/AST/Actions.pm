@@ -8,7 +8,7 @@ use Carp qw/croak/;
 
 # ABSTRACT: Translate SQL-2003 source to an AST - Semantic actions generic class
 
-our $VERSION = '0.002'; # TRIAL VERSION
+our $VERSION = '0.003'; # TRIAL VERSION
 
 our $SEPARATOR = <<SEPARATOR;
 _WS ~ [\\s]+
@@ -163,7 +163,6 @@ GRAMMAR
   # Unicode stuff. Make sure this has the UTF8 flag in perl.
   # Otherwise you might hit the "error: string is not in UTF-8".
   #
-  utf8::upgrade($value);
   return [$start, $length, $text, $value];
 }
 
@@ -310,7 +309,6 @@ GRAMMAR
   # Unicode stuff. Make sure this has the UTF8 flag in perl.
   # Otherwise you might hit the "error: string is not in UTF-8".
   #
-  utf8::upgrade($value);
   return [$start, $length, $text, $value];
 }
 
@@ -393,8 +391,6 @@ GRAMMAR
   # Unicode stuff. Make sure this has the UTF8 flag in perl.
   # Otherwise you might hit the "error: string is not in UTF-8".
   #
-  utf8::upgrade($introducerValue);
-  utf8::upgrade($value);
   return [$start, $length, $text, $value, $label, $introducerValue];
 }
 
@@ -440,7 +436,7 @@ MarpaX::Languages::SQL2003::AST::Actions - Translate SQL-2003 source to an AST -
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 DESCRIPTION
 

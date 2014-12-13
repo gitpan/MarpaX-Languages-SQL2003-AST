@@ -10,7 +10,7 @@ use File::Slurp qw/read_file/;
 
 # ABSTRACT: SQL AST as an XML
 
-our $VERSION = '0.002'; # TRIAL VERSION
+our $VERSION = '0.003'; # TRIAL VERSION
 
 # PODNAME: sql2003toxml
 
@@ -37,7 +37,7 @@ sql2003toxml - SQL AST as an XML
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 

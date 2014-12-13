@@ -154,3 +154,7 @@ __[ <101> CREATE CHARACTER SET ]__
 CREATE CHARACTER SET bob.charset_1 AS GET LATIN1;
 CREATE CHARACTER SET bob.charset_1 GET LATIN1;
 CREATE CHARACTER SET bob.charset_1 AS GET LATIN1 COLLATE bob.collation_1;
+
+__[ <102> General statements ]__
+/* Found at https://github.com/nilportugues/sql-query-builder */
+SELECT user.user_id, user.name, user.email FROM user;

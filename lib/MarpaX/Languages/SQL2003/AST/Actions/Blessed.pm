@@ -8,7 +8,7 @@ use Scalar::Util qw/blessed/;
 
 # ABSTRACT: Translate SQL-2003 source to an AST - Blessed semantic actions
 
-our $VERSION = '0.002'; # TRIAL VERSION
+our $VERSION = '0.003'; # TRIAL VERSION
 
 
 sub new {
@@ -142,7 +142,7 @@ MarpaX::Languages::SQL2003::AST::Actions::Blessed - Translate SQL-2003 source to
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 DESCRIPTION
 
