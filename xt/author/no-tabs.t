@@ -7,7 +7,7 @@ use Test::More 0.88;
 use Test::NoTabs;
 
 my @files = (
-    'bin/sql2003toxml',
+    'bin/sql2003ast',
     'lib/MarpaX/Languages/SQL2003/AST.pm',
     'lib/MarpaX/Languages/SQL2003/AST/Actions.pm',
     'lib/MarpaX/Languages/SQL2003/AST/Actions/Blessed.pm',

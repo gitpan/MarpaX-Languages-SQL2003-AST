@@ -16,7 +16,7 @@ my @module_files = (
 );
 
 my @scripts = (
-    'bin/sql2003toxml'
+    'bin/sql2003ast'
 );
 
 # fake home for cpan-testers

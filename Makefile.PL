@@ -17,13 +17,14 @@ my %WriteMakefileArgs = (
   },
   "DISTNAME" => "MarpaX-Languages-SQL2003-AST",
   "EXE_FILES" => [
-    "bin/sql2003toxml"
+    "bin/sql2003ast"
   ],
   "LICENSE" => "perl",
   "MIN_PERL_VERSION" => "5.010",
   "NAME" => "MarpaX::Languages::SQL2003::AST",
   "PREREQ_PM" => {
     "Carp" => 0,
+    "Data::Dumper" => 0,
     "File::Slurp" => 0,
     "Getopt::Long" => 0,
     "IO::String" => 0,
@@ -47,7 +48,7 @@ my %WriteMakefileArgs = (
     "IPC::Open3" => 0,
     "Test::More" => 0
   },
-  "VERSION" => "0.003",
+  "VERSION" => "0.004",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -56,6 +57,7 @@ my %WriteMakefileArgs = (
 
 my %FallbackPrereqs = (
   "Carp" => 0,
+  "Data::Dumper" => 0,
   "Data::Section" => 0,
   "ExtUtils::MakeMaker" => 0,
   "File::Slurp" => 0,

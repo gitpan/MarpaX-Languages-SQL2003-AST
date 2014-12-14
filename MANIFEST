@@ -5,7 +5,7 @@ MANIFEST
 META.json
 META.yml
 Makefile.PL
-bin/sql2003toxml
+bin/sql2003ast
 dist.ini
 etc/bnf2marpa.pl
 etc/sql-2003-2.ebnf

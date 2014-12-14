@@ -9,7 +9,7 @@ use Scalar::Util qw/blessed/;
 
 # ABSTRACT: Translate SQL-2003 source to an AST - XML semantic actions
 
-our $VERSION = '0.003'; # TRIAL VERSION
+our $VERSION = '0.004'; # VERSION
 
 
 sub new {
@@ -138,10 +138,6 @@ sub _unicodeDelimitedIdentifierUescape { super(); }
 
 # ----------------------------------------------------------------------------------------
 
-sub _showProgressAndExit { super(); }
-
-# ----------------------------------------------------------------------------------------
-
 sub _nationalCharacterStringLiteral { super(); }
 
 # ----------------------------------------------------------------------------------------
@@ -168,11 +164,49 @@ MarpaX::Languages::SQL2003::AST::Actions::XML - Translate SQL-2003 source to an 
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 DESCRIPTION
 
-This modules give the XML semantic actions associated to SQL-2003 grammar
+This modules give the XML semantic actions associated to SQL-2003 grammar.
+
+A non-terminal is an XML element with no attribute, element's name is the non-terminal symbol.
+
+A terminal is an XML element with at least four attributes:
+
+=over
+
+=item start
+
+Attribute's value is the start position in the input stream.
+
+=item lengh
+
+Attribute's value is the lengh of the terminal in the input stream.
+
+=item text
+
+Attribute's value is the terminal text.
+
+=item value
+
+Attribute's value is the terminal value.
+
+=back
+
+and optionnaly other attributes, e.g. for character string literals, you'll might have:
+
+=over
+
+=item introducer
+
+Attribute's value is the string introducer, e.g. "_utf8".
+
+=back
+
+=head1 SEE ALSO
+
+L<MarpaX::Languages::SQL2003::AST::Actions>, L<XML::LibXML>
 
 =head1 AUTHOR
 
