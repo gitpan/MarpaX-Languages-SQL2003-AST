@@ -9,14 +9,14 @@ use Scalar::Util qw/blessed/;
 
 # ABSTRACT: Translate SQL-2003 source to an AST - XML semantic actions
 
-our $VERSION = '0.004'; # VERSION
+our $VERSION = '0.005'; # VERSION
 
 
 sub new {
     my $class = shift;
     my $self = {
-		dom => XML::LibXML::Document->new("1.0", "UTF-8"),
-	       };
+      dom => XML::LibXML::Document->new("1.0", "UTF-8"),
+    };
     bless($self, $class);
     return $self;
 }
@@ -44,7 +44,7 @@ sub _nonTerminalSemantic {
       # We want to make sure that all data has the UTF8 flag on
       #
       foreach (0..$#{$_[$index]}) {
-	utf8::upgrade($_[$index]->[$_]);
+        utf8::upgrade($_[$index]->[$_]);
       }
       $child = XML::LibXML::Element->new($rhs[$index]);
       $child->setAttribute('start',  $_[$index]->[0]);
@@ -53,8 +53,8 @@ sub _nonTerminalSemantic {
       $child->setAttribute('value',  $_[$index]->[3]);
       my $i = 4;
       while ($#{$_[$index]} >= $i) {
-	$child->setAttribute($_[$index]->[$i], $_[$index]->[$i+1]);
-	$i += 2;
+        $child->setAttribute($_[$index]->[$i], $_[$index]->[$i+1]);
+        $i += 2;
       }
     } else {
       $child = $_[$index];
@@ -79,11 +79,9 @@ sub _nonTerminalSemantic {
 sub _lexemeValue {
   my ($self, $node) = @_;
 
-  if (! defined($node)) {
-    return undef;
-  }
+  my $rc = defined($node) ? $node->getAttribute('value') : undef;
 
-  return $node->getAttribute('value');
+  return $rc;
 }
 
 # ----------------------------------------------------------------------------------------
@@ -91,11 +89,9 @@ sub _lexemeValue {
 sub _lexemeStart {
   my ($self, $node) = @_;
 
-  if (! defined($node)) {
-    return undef;
-  }
+  my $rc = defined($node) ? $node->getAttribute('start') : undef;
 
-  return $node->getAttribute('start');
+  return $rc;
 }
 
 # ----------------------------------------------------------------------------------------
@@ -103,11 +99,9 @@ sub _lexemeStart {
 sub _lexemeLength {
   my ($self, $node) = @_;
 
-  if (! defined($node)) {
-    return undef;
-  }
+  my $rc = defined($node) ? $node->getAttribute('length') : undef;
 
-  return $node->getAttribute('length');
+  return $rc;
 }
 
 # ----------------------------------------------------------------------------------------
@@ -115,14 +109,14 @@ sub _lexemeLength {
 sub _childByIndex {
   my ($self, $node, $index) = @_;
 
-  if (! defined($node)) {
-    return undef;
-  }
+  my $child = undef;
 
-  my $i = -1;
-  my $child = $node->firstChild();
-  while (++$i < $index) {
-    $child = $child->nextSibling();
+  if (defined($node)) {
+    my $i = -1;
+    $child = $node->firstChild();
+    while (++$i < $index) {
+      $child = $child->nextSibling();
+    }
   }
 
   return $child;
@@ -150,6 +144,7 @@ sub _unsignedNumericLiteral { super(); }
 
 # ----------------------------------------------------------------------------------------
 
+
 1;
 
 __END__
@@ -164,7 +159,7 @@ MarpaX::Languages::SQL2003::AST::Actions::XML - Translate SQL-2003 source to an 
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 DESCRIPTION
 
@@ -180,9 +175,9 @@ A terminal is an XML element with at least four attributes:
 
 Attribute's value is the start position in the input stream.
 
-=item lengh
+=item length
 
-Attribute's value is the lengh of the terminal in the input stream.
+Attribute's value is the length of the terminal in the input stream.
 
 =item text
 
@@ -194,7 +189,7 @@ Attribute's value is the terminal value.
 
 =back
 
-and optionnaly other attributes, e.g. for character string literals, you'll might have:
+and optionaly other attributes, e.g. for character string literals, you'll might have:
 
 =over
 
@@ -203,6 +198,12 @@ and optionnaly other attributes, e.g. for character string literals, you'll migh
 Attribute's value is the string introducer, e.g. "_utf8".
 
 =back
+
+=head1 SUBROUTINES/METHODS
+
+=head2 new($class)
+
+Instantiate a new object of the class $class.
 
 =head1 SEE ALSO
 

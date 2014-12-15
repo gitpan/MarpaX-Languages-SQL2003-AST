@@ -2,13 +2,14 @@
 ############################################################################
 # Comments:                                                                #
 ############################################################################
-# <host identifier> is approximated to <identifier> for ANY language       #
+# <host identifier> is approximated to the following sub-grammar:          #
+# <host identifier L0 internal> ~ [^\s,;:()]+                              #
+# <host identifier L0> ~ <host identifier L0 internal>                     #
+#                     | '(' <host identifier L0> ')'                       #
+# All host programs as assumed to start with EXEC SQL                      #
 # <regular identifier> is supposed to match <SQL language identifier>      #
 # <direct implementation-defined statement> is skipped.                    #
-# UESCAPE is fully supported.                                              #
-# <embeded SQL TARGET LANGUAGE> are supposed to all be EXEC SQL            #
-# <host label identifier> is skipped                                       #
-# <host PL/I label variable> is skipped                                    #
+# <UESCAPE> is fully supported.                                            #
 # <COBOL dbcs> is not implemented                                          #
 #                                                                          #
 # Take care that in SQL-2003 string are single quoted, Unicode strings are #
@@ -71,7 +72,7 @@
 <SQL start>  ::= <preparable statement>
                | <direct SQL statement>
                | <embedded SQL declare section>
-               | <embedded SQL host program>
+/*             | <embedded SQL host program> */ /* Generates useless ambiguity */
                | <embedded SQL statement>
                | <SQL_client module definition>
 
@@ -1014,6 +1015,10 @@
 <datetime value L0> ~ <unsigned integer L0>
 
 <boolean literal> ::= TRUE | FALSE | UNKNOWN
+
+<host identifier L0 internal> ~ [^\s,;:()]+
+<host identifier L0> ~ <host identifier L0 internal>
+                     | /*LEX*/'(' <host identifier L0> /*LEX*/')'
 
 <identifier L0 internal> ~ <actual identifier L0>
 <identifier> ~ <identifier L0 internal>
@@ -4010,7 +4015,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <Ada assignment operator> ::= <colon><equals operator>
 
-<Ada host identifier> ~ <identifier L0 internal>
+<Ada host identifier> ~ <host identifier L0>
 
 /*
 <Ada host identifier> ::= <Ada host identifier letter> ( <underscore>? ( <Ada host identifier letter> | <digit> ) )*
@@ -4099,7 +4104,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <C array specification> ::= <left bracket> <length> <right bracket>
 
-<C host identifier> ~ <identifier L0 internal>
+<C host identifier> ~ <host identifier L0>
 
 /*
 <C host identifier> ::= <regular identifier> */ /* !! See the Syntax Rules. */
@@ -4188,7 +4193,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <embedded SQL COBOL program> ::= EXEC SQL /* !! See the Syntax Rules. */
 
-<COBOL host identifier> ~ <identifier L0 internal>
+<COBOL host identifier> ~ <host identifier L0>
 
 <COBOL variable definition> ::=
 		( 01 | 77 ) <COBOL host identifier> <COBOL type specification>
@@ -4231,7 +4236,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <COBOL literal> ::= <COBOL nonnumeric>
                   | <COBOL numeric>
-                  | <COBOL dbcs> 
+                  | <COBOL dbcs>
                   | <COBOL figurative-constant>
 
 <COBOL nonnumeric> ::= '"' ([^"] | '"' '"')* '"'
@@ -4243,7 +4248,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <COBOL numeric> ::= ('+' | '-')? (<digit>* '.' <digit>+ | <digit>+)
 
- <COBOL dbcs> = NOT IMPLEMENTED 
+<COBOL dbcs> = NOT IMPLEMENTED
 
 <COBOL figurative-constant> ::= "ZERO"
                               | "ZEROS"
@@ -4338,7 +4343,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <embedded SQL Fortran program> ::= EXEC SQL /* !! See the Syntax Rules. */
 
-<Fortran host identifier> ~ <identifier L0 internal>
+<Fortran host identifier> ~ <host identifier L0>
 
 <Fortran variable definition> ::=
 		<Fortran type specification> <Fortran host identifier> ( <comma> <Fortran host identifier> )*
@@ -4396,7 +4401,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 	|	<MUMPS character variable> <semicolon>
 	|	<MUMPS derived type specification> <semicolon>
 
-<MUMPS host identifier> ~ <identifier L0 internal>
+<MUMPS host identifier> ~ <host identifier L0>
 
 <MUMPS character variable> ::=
 		VARCHAR <MUMPS host identifier> <MUMPS length specification>
@@ -4448,7 +4453,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <embedded SQL Pascal program> ::= EXEC SQL /* !! See the Syntax Rules. */
 
-<Pascal host identifier> ~ <identifier L0 internal>
+<Pascal host identifier> ~ <host identifier L0>
 
 <Pascal variable definition> ::=
 		<Pascal host identifier> ( <comma> <Pascal host identifier> )* <colon> <Pascal type specification> <semicolon>
@@ -4499,7 +4504,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <embedded SQL PL_I program> ::= EXEC SQL /* !! See the Syntax Rules. */
 
-<PL_I host identifier> ~ <identifier L0 internal>
+<PL_I host identifier> ~ <host identifier L0>
 
 <PL_I variable definition> ::=
 		( DCL | DECLARE ) <PL_I host identifier>

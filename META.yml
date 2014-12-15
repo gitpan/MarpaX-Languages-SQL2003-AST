@@ -30,16 +30,16 @@ no_index:
 provides:
   MarpaX::Languages::SQL2003::AST:
     file: lib/MarpaX/Languages/SQL2003/AST.pm
-    version: '0.004'
+    version: '0.005'
   MarpaX::Languages::SQL2003::AST::Actions:
     file: lib/MarpaX/Languages/SQL2003/AST/Actions.pm
-    version: '0.004'
+    version: '0.005'
   MarpaX::Languages::SQL2003::AST::Actions::Blessed:
     file: lib/MarpaX/Languages/SQL2003/AST/Actions/Blessed.pm
-    version: '0.004'
+    version: '0.005'
   MarpaX::Languages::SQL2003::AST::Actions::XML:
     file: lib/MarpaX/Languages/SQL2003/AST/Actions/XML.pm
-    version: '0.004'
+    version: '0.005'
 requires:
   Carp: '0'
   Data::Dumper: '0'
@@ -61,4 +61,4 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=MarpaX-Languages-SQL2003-AST
   homepage: https://metacpan.org/release/MarpaX-Languages-SQL2003-AST
   repository: git://github.com/jddurand/marpax-languages-sql2003-ast.git
-version: '0.004'
+version: '0.005'

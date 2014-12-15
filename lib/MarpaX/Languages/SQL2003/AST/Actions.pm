@@ -10,9 +10,7 @@ use Math::BigFloat;
 
 # ABSTRACT: Translate SQL-2003 source to an AST - Semantic actions generic class
 
-our $VERSION = '0.004'; # VERSION
-
-
+our $VERSION = '0.005'; # VERSION
 
 our $SEPARATOR = <<SEPARATOR;
 _WS ~ [\\s]+
@@ -45,6 +43,8 @@ _COMMENT ~ _COMMENT_EVERYYHERE_START _COMMENT_EVERYYHERE_END
 
 <separator> ::= <discard many>
 SEPARATOR
+
+
 
 sub new {
     my $class = shift;
@@ -119,8 +119,8 @@ sub _unicodeDelimitedIdentifierValue {
 <nondoublequote character> ~ [^"]
                            | [\\x{$Unicode_Escape_Specifier_Hex}] '"'
 
-<Unicode identifier part many> ::= <Unicode identifier part>+  action => MarpaX::Languages::SQL2003::AST::Actions::_concat
-<Unicode delimiter body> ::= ('"') <Unicode identifier part many> ('"')
+<Unicode identifier part any> ::= <Unicode identifier part>*  action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<Unicode delimiter body> ::= ('"') <Unicode identifier part any> ('"')
 <Unicode identifier part> ::= <Unicode delimited identifier part>
                             | <Unicode escape value>
 
@@ -130,10 +130,9 @@ sub _unicodeDelimitedIdentifierValue {
 <doublequote symbol> ::= '""' action => MarpaX::Languages::SQL2003::AST::Actions::_lastChar
 
 <Unicode escape value> ::=
-		<Unicode 4 digit escape value> action => MarpaX::Languages::SQL2003::AST::Actions::_Unicode4
-	|	<Unicode 6 digit escape value> action => MarpaX::Languages::SQL2003::AST::Actions::_Unicode4
-	|	<Unicode character escape value> action => MarpaX::Languages::SQL2003::AST::Actions::_UnicodeEscape
-
+                           <Unicode 4 digit escape value> action => MarpaX::Languages::SQL2003::AST::Actions::_Unicode4
+                         | <Unicode 6 digit escape value> action => MarpaX::Languages::SQL2003::AST::Actions::_Unicode4
+                         | <Unicode character escape value> action => MarpaX::Languages::SQL2003::AST::Actions::_UnicodeEscape
 
 <hexit> ~ [a-fA-f0-9]
 
@@ -178,7 +177,7 @@ sub _unicodeDelimitedIdentifierUescape {
 
   my $text = $Unicode_Delimited_Identifier_Lexeme->[2];
   #
-  # $Unicode_Escape_Specifier is: 
+  # $Unicode_Escape_Specifier is:
   # <Unicode_Escape_Specifier> ::= <XXX_Maybe>
   # <XXX_Maybe> ::= <XXX>
   # <XXX_Maybe> ::=
@@ -285,7 +284,7 @@ lexeme default = latm => 1
 <National Character String Literal value> ::= ('N':i) <character representation many>
 
 <character representation> ::= (<quote>) <inner> (<quote>)
-<inner> ::= <inner representation>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<inner> ::= <inner representation>* action => MarpaX::Languages::SQL2003::AST::Actions::_concat
 
 $SEPARATOR
 GRAMMAR
@@ -361,7 +360,7 @@ lexeme default = latm => 1        # LATM is important here because <set name> an
                                    <character representation many> action => MarpaX::Languages::SQL2003::AST::Actions::_characterStringLiteralWithoutIntroducer
 
 <character representation> ::= (<quote>) <inner> (<quote>)
-<inner> ::= <inner representation>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<inner> ::= <inner representation>* action => MarpaX::Languages::SQL2003::AST::Actions::_concat
 <inner representation> ::= <notquote symbol> | <quote symbol>
 
 $SEPARATOR
@@ -417,6 +416,7 @@ sub _unsignedNumericLiteral {
 
 # ----------------------------------------------------------------------------------------
 
+
 1;
 
 __END__
@@ -431,7 +431,7 @@ MarpaX::Languages::SQL2003::AST::Actions - Translate SQL-2003 source to an AST -
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 DESCRIPTION
 
@@ -458,6 +458,12 @@ Syntax is a succession of N'...'. The value is the string concatenation.
 The value is the perl's Math::BigFloat string representation.
 
 =back
+
+=head1 SUBROUTINES/METHODS
+
+=head2 new($class)
+
+Instantiate a new object of the class $class.
 
 =head1 SEE ALSO
 
